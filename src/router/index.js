@@ -3,6 +3,7 @@ import ThreadShow from '@/pages/ThreadShow'
 import NotFound from '@/pages/NotFound'
 import Forum from '@/pages/Forum'
 import Category from '@/pages/Category'
+import Profile from '@/pages/Profile'
 import { createRouter, createWebHistory }  from 'vue-router'
 import sourceData from '@/data.json'
 
@@ -23,6 +24,12 @@ const routes = [
     name: 'Forum',
     component: Forum,
     props: true
+  },
+  {
+    path: '/me',
+    name: 'Profile',
+    component: Profile,
+    props: true,
   },
   {
     path: '/thread/:id',

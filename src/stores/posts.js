@@ -11,6 +11,9 @@ export const usePostsStore = defineStore('posts', {
   getters: {
     getPostsByThreadId: (state) => {
       return (threadId) => state.posts.filter((post) => post.threadId === threadId)
+    },
+    getPostsByUserId: (state) => {
+      return (userId) => state.posts.filter((post) => post.userId === userId)
     }
   },
   actions: {
