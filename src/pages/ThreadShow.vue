@@ -34,7 +34,7 @@ export default {
       return this.threadsStore.getThreadById(this.id)
     },
     threadPosts() {
-      return this.postsStore.getPostsByThreadId(this.id)
+      return this.postsStore.posts.filter((post) => post.threadId === this.id)
     },
     ...mapStores(useThreadsStore, usePostsStore)
   },

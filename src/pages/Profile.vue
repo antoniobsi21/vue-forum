@@ -1,46 +1,14 @@
 <template>
   <div class="flex-grid">
     <div class="col-3 push-top">
-      <div class="profile-card">
-        <p class="text-center">
-          <img
-            :src="user.avatar"
-            alt=""
-            class="avatar-xlarge"
-          >
-        </p>
-
-        <h1 class="title">
-          {{ user.username }}
-        </h1>
-
-        <p class="text-lead">
-          {{ user.name }}
-        </p>
-
-        <p class="text-justify">
-          <span v-if="user.bio">{{ user.bio }}</span>
-          <span v-else>No bio specified.</span>
-        </p>
-
-        <span class="online">{{ user.username }} is online</span>
-
-
-        <div class="stats">
-          <span>{{ userPostsCount }} post{{ userPostsCount === 1 ? '' : 's' }}</span>
-          <span>{{ userThreadsCount }} thread{{ userThreadsCount === 1 ? '' : 's' }}</span>
-        </div>
-
-        <hr>
-
-        <p
-          v-if="user.website"
-          class="text-large text-center"
-        >
-          <i class="fa fa-globe" /> <a :href="user.website">{{ user.website }}</a>
-        </p>
-      </div>
-
+      <UserProfileCardEditor
+        v-if="isEditing"
+        :user="user"
+      />
+      <UserProfileCard
+        v-else
+        :user="user"
+      />
       <p class="text-xsmall text-faded text-center">
         Member since june 2003, last visited 4 hours ago
       </p>
@@ -50,6 +18,7 @@
         <a
           href="edit-profile.html"
           class="btn-green btn-small"
+          @click.prevent="isEditing = true"
         >Edit Profile</a>
       </div>
     </div>
@@ -64,36 +33,34 @@
 
       <hr>
 
-      <PostList :posts="userPosts" />
+      <PostList :posts="user.posts" />
     </div>
   </div>
 </template>
 
 <script>
 import PostList from '../components/PostList'
+import UserProfileCard from '../components/UserProfileCard.vue'
+import UserProfileCardEditor from '../components/UserProfileCardEditor.vue'
 import { mapStores } from 'pinia'
 import { useAuthUserStore } from '../stores/authUser'
-import { useThreadsStore } from '../stores/threads'
-import { usePostsStore } from '../stores/posts'
 
 export default {
   components: {
-    PostList
+    PostList,
+    UserProfileCard,
+    UserProfileCardEditor
+  },
+  data() {
+    return {
+      isEditing: false
+    }
   },
   computed: {
     user() {
       return this.authUserStore.authUser
     },
-    userThreadsCount() {
-      return this.threadsStore.getThreadsByUserId(this.authUserStore.authId)?.length || 0
-    },
-    userPostsCount() {
-      return this.userPosts?.length || 0
-    },
-    userPosts() {
-      return this.postsStore.getPostsByUserId(this.authUserStore.authId)
-    },
-    ...mapStores(useAuthUserStore, useThreadsStore, usePostsStore)
+    ...mapStores(useAuthUserStore)
   }
 }
 </script>
