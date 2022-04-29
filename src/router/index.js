@@ -4,6 +4,7 @@ import NotFound from '@/pages/NotFound'
 import Forum from '@/pages/Forum'
 import Category from '@/pages/Category'
 import Profile from '@/pages/Profile'
+import ThreadCreate from '@/pages/ThreadCreate'
 import { createRouter, createWebHistory }  from 'vue-router'
 import sourceData from '@/data.json'
 
@@ -35,6 +36,12 @@ const routes = [
     path: '/me',
     name: 'Profile',
     component: Profile,
+    meta: { toTop: true, smoothScroll: true },
+  },
+  {
+    path: '/forum/:forumId/thread/create',
+    name: 'ThreadCreate',
+    component: ThreadCreate,
     props: true,
   },
   {
@@ -66,5 +73,11 @@ const routes = [
 
 export default createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to) {
+    const scroll = {}
+    if(to.meta.toTop) scroll.top = 0
+    if(to.meta.smoothScroll) scroll.behavior = 'smooth'
+    return scroll
+  }
 })

@@ -18,7 +18,11 @@ export const usePostsStore = defineStore('posts', {
       post.publishedAt = Math.floor(Date.now() / 1000)
 
       this.posts.push(post)
-      threadsStore.getThreadById(post.threadId).posts.push(post.id)
+      const thread = threadsStore.getThreadById(post.threadId)
+      if(!thread.posts) {
+        thread.posts = []
+      }
+      thread.posts.push(post.id)
     }
   }
 })

@@ -6,7 +6,7 @@
         :user="user"
       />
       <UserProfileCardEditor
-        v-else
+        v-if="edit"
         :user="user"
       />
     </div>
